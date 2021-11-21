@@ -38,13 +38,13 @@ public class DeathEvent implements Listener {
       if (event.getEntity() instanceof Player) {
          final Player player = (Player)event.getEntity();
          final Location Loc = event.getEntity().getLocation();
-         if (!Main.instance.getConfig().getBoolean("AutoRespawn") && player.getHealth() - event.getFinalDamage() <= 0.0D && event.getEntity() instanceof Player) {
+         if (!Main.instance.getConfig().getBoolean("autorespawn") && player.getHealth() - event.getFinalDamage() <= 0.0D && event.getEntity() instanceof Player) {
             event.setCancelled(true);
             player.setGameMode(GameMode.SPECTATOR);
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', this.deathmessage.replace("%player%", player.getName())));
          }
 
-         if (Main.instance.getConfig().getBoolean("AutoRespawn") && player.getHealth() - event.getFinalDamage() <= 0.0D && event.getEntity() instanceof Player) {
+         if (Main.instance.getConfig().getBoolean("autorespawn") && player.getHealth() - event.getFinalDamage() <= 0.0D && event.getEntity() instanceof Player) {
             this.cooldown.put(player.getName(), System.currentTimeMillis());
             player.setGameMode(GameMode.SPECTATOR);
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', this.AutoRespawnMessage.replace("%player%", player.getName())));
@@ -52,7 +52,7 @@ public class DeathEvent implements Listener {
             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.instance, new Runnable() {
                public void run() {
                   player.teleport(Loc);
-                  player.teleport(Loc);
+                  player.setGameMode(GameMode.SURVIVAL);
                }
             }, (long)(this.Respawncooldown * 20));
          }
