@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -25,6 +26,7 @@ public class DeathEvent implements Listener {
    int Respawncooldown;
    String respawnedtitle;
    String respawnedsubtitle;
+   String BroadcastMessage;
 
    public DeathEvent() {
       this.command = Main.instance.getConfig().getStringList("message");
@@ -34,6 +36,7 @@ public class DeathEvent implements Listener {
       this.Respawncooldown = Main.instance.getConfig().getInt("AutoRespawn.time");
       this.respawnedtitle = Main.instance.getConfig().getString("respawnedtitle");
       this.respawnedsubtitle = Main.instance.getConfig().getString("respawnedsubtitle");
+      this.BroadcastMessage = Main.instance.getConfig().getString("BroadcastMessage");
    }
 
    public void function() {
@@ -46,17 +49,33 @@ public class DeathEvent implements Listener {
       if (event.getEntity() instanceof Player) {
          final Player player = (Player)event.getEntity();
          final Location Loc = event.getEntity().getLocation();
-         if (!Main.instance.getConfig().getBoolean("autorespawn") && player.getHealth() - event.getFinalDamage() <= 0.0D && event.getEntity() instanceof Player) {
-            event.setCancelled(true);
-            player.setGameMode(GameMode.SPECTATOR);
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', this.deathmessage.replace("%player%", player.getName())));
+         this.BroadcastMessage.replace("%player%", player.getName());
+         if (!Main.instance.getConfig().getBoolean("autorespawn")) {
+            if (player.getHealth() - event.getFinalDamage() <= 0.0D && event.getEntity() instanceof Player) {
+               event.setCancelled(true);
+               player.setGameMode(GameMode.SPECTATOR);
+               player.sendMessage(ChatColor.translateAlternateColorCodes('&', this.deathmessage.replace("%player%", player.getName())));
+               player.spigot().playEffect(player.getLocation(), Effect.HEART, 0, 0, 0.0F, 0.0F, 0.0F, 0.0F, 5, 30);
+            }
+
+            if (Main.instance.getConfig().getBoolean("Broadcast")) {
+               Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', Main.instance.getConfig().getString("BroadcastMessage")));
+            }
          }
 
          if (Main.instance.getConfig().getBoolean("autorespawn") && player.getHealth() - event.getFinalDamage() <= 0.0D && event.getEntity() instanceof Player) {
+            if (Main.instance.getConfig().getBoolean("HeartEffect")) {
+               player.spigot().playEffect(player.getLocation(), Effect.HEART, 0, 0, 0.0F, 0.0F, 0.0F, 0.0F, 5, 30);
+            }
+
             this.cooldown.put(player.getName(), System.currentTimeMillis());
             player.setGameMode(GameMode.SPECTATOR);
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', this.AutoRespawnMessage.replace("%player%", player.getName())));
             event.setCancelled(true);
+            if (Main.instance.getConfig().getBoolean("Broadcast")) {
+               Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', Main.instance.getConfig().getString("BroadcastMessage")));
+            }
+
             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.instance, new Runnable() {
                public void run() {
                   if (Main.instance.getConfig().getBoolean("deathcommand")) {
