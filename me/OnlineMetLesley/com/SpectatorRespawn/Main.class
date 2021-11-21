@@ -24,15 +24,4 @@ public class Main extends JavaPlugin implements Listener {
       Bukkit.getServer().getPluginManager().registerEvents(new DeathEvent(), this);
       new MetricsLite(this);
    }
-
-   public static void registerEvents(Plugin plugin, Listener[] listeners) {
-      Listener[] var5 = listeners;
-      int var4 = listeners.length;
-
-      for(int var3 = 0; var3 < var4; ++var3) {
-         Listener listener = var5[var3];
-         Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
-      }
-
-   }
 }
