@@ -1,6 +1,7 @@
 package me.OnlineMetlesley.com.SpectatorRespawn;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -8,15 +9,27 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin implements Listener {
    FileConfiguration config = this.getConfig();
+   Server getserver = this.getServer();
    public static Plugin instance;
+
+   public Plugin getInstance() {
+      return instance;
+   }
 
    public void onEnable() {
       instance = this;
+      this.config.options().header("Hello this plugin is made by OnlineMetlesley.\nAutorespawn set to true to enable it, then setup the message and time in seconds.\nKickonDeath set to true to enable it, then setup the command \nIf you have any questions or bug reports, please join our discord. https://discord.gg/xAHP8cA");
+      this.config.addDefault("kickondeath", false);
+      this.config.addDefault("kickondeathcommand", "kick %player% you died!");
       this.config.addDefault("DeathMessage", "&c(!) Hey %player%, you just died and got into Spectator Mode!");
+      this.config.addDefault("respawnMessage", "&b(!) You just respawned!");
+      this.config.addDefault("AutoRespawn", true);
+      this.config.addDefault("AutoRespawn.AutoRespawnMessage", "&b(!) You just died and will get respawned in 30 seconds!");
+      this.config.addDefault("AutoRespawn.time", 10);
       this.config.options().copyDefaults(true);
       this.saveConfig();
       Bukkit.getPluginManager().registerEvents(this, this);
-      Bukkit.getServer().getPluginManager().registerEvents(new DieEvent(), this);
+      Bukkit.getServer().getPluginManager().registerEvents(new DeathEvent(), this);
    }
 
    public void onDisable() {
