@@ -1,5 +1,6 @@
 package me.OnlineMetlesley.com.SpectatorRespawn;
 
+import com.connorlinfoot.titleapi.TitleAPI;
 import java.util.HashMap;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -19,6 +20,8 @@ public class DeathEvent implements Listener {
    String respawnMessage;
    int Respawncooldown;
    String kickondeathcommand;
+   String respawnedtitle;
+   String respawnedsubtitle;
 
    public DeathEvent() {
       this.deathmessage = Main.instance.getConfig().getString("DeathMessage");
@@ -26,6 +29,8 @@ public class DeathEvent implements Listener {
       this.respawnMessage = Main.instance.getConfig().getString("respawnMessage");
       this.Respawncooldown = Main.instance.getConfig().getInt("AutoRespawn.time");
       this.kickondeathcommand = Main.instance.getConfig().getString("kickondeathcommand");
+      this.respawnedtitle = Main.instance.getConfig().getString("respawnedtitle");
+      this.respawnedsubtitle = Main.instance.getConfig().getString("respawnedsubtitle");
    }
 
    public void function() {
@@ -53,6 +58,8 @@ public class DeathEvent implements Listener {
                public void run() {
                   player.teleport(Loc);
                   player.setGameMode(GameMode.SURVIVAL);
+                  player.setHealth(20.0D);
+                  TitleAPI.sendTitle(player, 20, 40, 20, DeathEvent.this.respawnedtitle, DeathEvent.this.respawnedsubtitle);
                }
             }, (long)(this.Respawncooldown * 20));
          }
