@@ -24,7 +24,7 @@ public class Main extends JavaPlugin implements Listener {
       this.config.addDefault("DeathMessage", "&c(!) Hey %player%, you just died and got into Spectator Mode!");
       this.config.addDefault("respawnMessage", "&b(!) You just respawned!");
       this.config.addDefault("AutoRespawn", true);
-      this.config.addDefault("AutoRespawn.AutoRespawnMessage", "&b(!) You just died and will get respawned in 30 seconds!");
+      this.config.addDefault("AutoRespawn.AutoRespawnMessage", "&b(!) You just died and will get respawned in 10 seconds!");
       this.config.addDefault("AutoRespawn.time", 10);
       this.config.options().copyDefaults(true);
       this.saveConfig();
