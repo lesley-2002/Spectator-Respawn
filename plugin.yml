@@ -1,5 +1,5 @@
 name: SpectatorRespawn
 author: OnlineMetLesley
-version: 1.4
+version: 1.5
 main: me.OnlineMetlesley.com.SpectatorRespawn.Main
 softdepend: [TitleAPI]
