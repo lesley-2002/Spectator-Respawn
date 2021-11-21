@@ -32,6 +32,7 @@ public class Main extends JavaPlugin implements Listener {
       this.saveConfig();
       Bukkit.getPluginManager().registerEvents(this, this);
       Bukkit.getServer().getPluginManager().registerEvents(new DeathEvent(), this);
+      new MetricsLite(this);
    }
 
    public void onDisable() {
