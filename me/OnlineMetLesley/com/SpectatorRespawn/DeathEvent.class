@@ -2,6 +2,8 @@ package me.OnlineMetlesley.com.SpectatorRespawn;
 
 import com.connorlinfoot.titleapi.TitleAPI;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -15,20 +17,20 @@ import org.bukkit.plugin.Plugin;
 public class DeathEvent implements Listener {
    public HashMap<String, Long> cooldown = new HashMap();
    public Plugin instance;
+   List<String> command;
    String deathmessage;
    String AutoRespawnMessage;
    String respawnMessage;
    int Respawncooldown;
-   String kickondeathcommand;
    String respawnedtitle;
    String respawnedsubtitle;
 
    public DeathEvent() {
+      this.command = Main.instance.getConfig().getStringList("message");
       this.deathmessage = Main.instance.getConfig().getString("DeathMessage");
       this.AutoRespawnMessage = Main.instance.getConfig().getString("AutoRespawn.AutoRespawnMessage");
       this.respawnMessage = Main.instance.getConfig().getString("respawnMessage");
       this.Respawncooldown = Main.instance.getConfig().getInt("AutoRespawn.time");
-      this.kickondeathcommand = Main.instance.getConfig().getString("kickondeathcommand");
       this.respawnedtitle = Main.instance.getConfig().getString("respawnedtitle");
       this.respawnedsubtitle = Main.instance.getConfig().getString("respawnedsubtitle");
    }
@@ -64,8 +66,13 @@ public class DeathEvent implements Listener {
             }, (long)(this.Respawncooldown * 20));
          }
 
-         if (Main.instance.getConfig().getBoolean("kickondeath")) {
-            Main.instance.getServer().dispatchCommand(Bukkit.getConsoleSender(), this.kickondeathcommand.replace("%player%", player.getName()));
+         if (Main.instance.getConfig().getBoolean("deathcommand") && player.getHealth() - event.getFinalDamage() <= 0.0D && event.getEntity() instanceof Player) {
+            Iterator var5 = Main.instance.getConfig().getStringList("deathcommands").iterator();
+
+            while(var5.hasNext()) {
+               String cmd = (String)var5.next();
+               Main.instance.getServer().dispatchCommand(Bukkit.getConsoleSender(), cmd.replace("%player%", player.getName()));
+            }
          }
       }
 
