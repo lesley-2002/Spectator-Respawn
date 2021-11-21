@@ -9,8 +9,15 @@ DeathMessage: '&c(!) Hey %player%, you just died and got into Spectator Mode!'
 #Enable sounds when the player dies?
 playsound: true
 
+#Should the plugin broadcast a message when the player dies
+Broadcast: true
+BroadcastMessage: '&7%player% &cdied'
+
 #playsound has to be on to let a sound work. Use a sound of this site: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
 sound: 'BLOCK_LAVA_EXTINGUISH'
+
+#Send a effect when the player dies
+HeartEffect: true
 
 #Should the plugin send a command when the player dies?
 deathcommand: true
