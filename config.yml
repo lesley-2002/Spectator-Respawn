@@ -1,1 +1,14 @@
-DeathMessage: '&c(!) Hey %player%, you just died and got into GameMode Spectator!'
+#Hello this plugin is made by OnlineMetlesley.
+#Autorespawn set to true to enable it, then setup the message and time in seconds.
+#KickonDeath set to true to enable it, then setup the command 
+#If you have any questions or bug reports, please join our discord. https://discord.gg/xAHP8cA
+kickondeath: true
+kickondeathcommand: kick %player% you died!
+
+DeathMessage: '&c(!) Hey %player%, you just died and got into Spectator Mode!'
+respawnMessage: '&b(!) You just respawned!'
+
+autorespawn: true
+AutoRespawn: 
+  AutoRespawnMessage: '&b(!) You just died and you will get respawned in 10 seconds!'
+  time: 10
