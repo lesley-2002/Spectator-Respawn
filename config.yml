@@ -17,7 +17,8 @@ BroadcastMessage: '&7%player% &cdied'
 sound: 'BLOCK_LAVA_EXTINGUISH'
 
 #Send a effect when the player dies
-HeartEffect: true
+Effect: true
+effect: 'HEART'
 
 #Should the plugin send a command when the player dies?
 deathcommand: true
