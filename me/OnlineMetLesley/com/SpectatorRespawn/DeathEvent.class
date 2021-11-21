@@ -8,6 +8,7 @@ import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -70,6 +71,10 @@ public class DeathEvent implements Listener {
                   TitleAPI.sendTitle(player, 20, 40, 20, DeathEvent.this.respawnedtitle, DeathEvent.this.respawnedsubtitle);
                }
             }, (long)(this.Respawncooldown * 20));
+         }
+
+         if (Main.instance.getConfig().getBoolean("playsound")) {
+            player.playSound(player.getLocation(), Sound.valueOf(Main.instance.getConfig().getString("sound").toUpperCase()), 10.0F, 100.0F);
          }
 
          if (Main.instance.getConfig().getBoolean("deathcommand") && player.getHealth() - event.getFinalDamage() <= 0.0D && event.getEntity() instanceof Player) {
