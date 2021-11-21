@@ -2,10 +2,11 @@
 #Autorespawn set to true to enable it, then setup the message and time in seconds.
 #KickonDeath set to true to enable it, then setup the command 
 #If you have any questions or bug reports, please join our discord. https://discord.gg/xAHP8cA
-kickondeath: true
-kickondeathcommand: kick %player% you died!
 
 DeathMessage: '&c(!) Hey %player%, you just died and got into Spectator Mode!'
+deathcommand: true
+deathcommands:
+  - 'spawn %player%'
 respawnMessage: '&b(!) You just respawned!'
 respawntitle: '&cRespawned!'
 respawnedsubtitle: '&bDont die again'
