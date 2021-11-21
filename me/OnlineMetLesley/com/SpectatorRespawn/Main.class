@@ -37,7 +37,7 @@ public class Main extends JavaPlugin implements Listener {
    public void onDisable() {
    }
 
-   public static void registerEvents(Plugin plugin, Listener... listeners) {
+   public static void registerEvents(Plugin plugin, Listener[] listeners) {
       Listener[] var5 = listeners;
       int var4 = listeners.length;
 
