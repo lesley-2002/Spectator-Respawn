@@ -58,9 +58,15 @@ public class DeathEvent implements Listener {
             event.setCancelled(true);
             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.instance, new Runnable() {
                public void run() {
-                  player.teleport(Loc);
-                  player.setGameMode(GameMode.SURVIVAL);
-                  player.setHealth(20.0D);
+                  if (Main.instance.getConfig().getBoolean("deathcommand")) {
+                     player.setGameMode(GameMode.SURVIVAL);
+                     player.setHealth(20.0D);
+                  } else {
+                     player.setGameMode(GameMode.SURVIVAL);
+                     player.setHealth(20.0D);
+                     player.teleport(Loc);
+                  }
+
                   TitleAPI.sendTitle(player, 20, 40, 20, DeathEvent.this.respawnedtitle, DeathEvent.this.respawnedsubtitle);
                }
             }, (long)(this.Respawncooldown * 20));
