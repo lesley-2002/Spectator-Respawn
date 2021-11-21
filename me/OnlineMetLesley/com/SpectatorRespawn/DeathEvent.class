@@ -1,0 +1,66 @@
+package me.OnlineMetlesley.com.SpectatorRespawn;
+
+import java.util.HashMap;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.plugin.Plugin;
+
+public class DeathEvent implements Listener {
+   public HashMap<String, Long> cooldown = new HashMap();
+   public Plugin instance;
+   String deathmessage;
+   String AutoRespawnMessage;
+   String respawnMessage;
+   int Respawncooldown;
+   String kickondeathcommand;
+
+   public DeathEvent() {
+      this.deathmessage = Main.instance.getConfig().getString("DeathMessage");
+      this.AutoRespawnMessage = Main.instance.getConfig().getString("AutoRespawn.AutoRespawnMessage");
+      this.respawnMessage = Main.instance.getConfig().getString("respawnMessage");
+      this.Respawncooldown = Main.instance.getConfig().getInt("AutoRespawn.time");
+      this.kickondeathcommand = Main.instance.getConfig().getString("kickondeathcommand");
+   }
+
+   public void function() {
+      Main plugin = (Main)Main.instance;
+      plugin.getServer();
+   }
+
+   @EventHandler
+   public void damage(EntityDamageEvent event) {
+      if (event.getEntity() instanceof Player) {
+         final Player player = (Player)event.getEntity();
+         final Location Loc = event.getEntity().getLocation();
+         if (!Main.instance.getConfig().getBoolean("AutoRespawn") && player.getHealth() - event.getFinalDamage() <= 0.0D && event.getEntity() instanceof Player) {
+            event.setCancelled(true);
+            player.setGameMode(GameMode.SPECTATOR);
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', this.deathmessage.replace("%player%", player.getName())));
+         }
+
+         if (Main.instance.getConfig().getBoolean("AutoRespawn") && player.getHealth() - event.getFinalDamage() <= 0.0D && event.getEntity() instanceof Player) {
+            this.cooldown.put(player.getName(), System.currentTimeMillis());
+            player.setGameMode(GameMode.SPECTATOR);
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', this.AutoRespawnMessage.replace("%player%", player.getName())));
+            event.setCancelled(true);
+            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.instance, new Runnable() {
+               public void run() {
+                  player.teleport(Loc);
+                  player.teleport(Loc);
+               }
+            }, (long)(this.Respawncooldown * 20));
+         }
+
+         if (Main.instance.getConfig().getBoolean("kickondeath")) {
+            Main.instance.getServer().dispatchCommand(Bukkit.getConsoleSender(), this.kickondeathcommand.replace("%player%", player.getName()));
+         }
+      }
+
+   }
+}
